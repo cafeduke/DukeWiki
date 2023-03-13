@@ -1,0 +1,52 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/header-basic}"></head>
+<body>
+
+  <!-- Include basic navigation bar  -->
+  <div th:replace="~{/fragments/nav-basic}"></div>
+
+  <h1>Error</h1>
+  <table class="table">
+    <tbody>
+      <tr>
+        <th>Date</th>
+        <td th:text="${timestamp}" />
+      </tr>
+      <tr>
+        <th>Path</th>
+        <td th:text="${path}" />
+      </tr>
+      <tr>
+        <th>Error</th>
+        <td th:text="${error}" />
+      </tr>
+      <tr>
+        <th>Status</th>
+        <td th:text="${status}" />
+      </tr>
+      <tr>
+        <th>Message</th>
+        <td th:text="${message}" />
+      </tr>
+      <tr>
+        <th>Exception</th>
+        <td th:text="${exception}" />
+      </tr>
+      <tr>
+        <th>Trace</th>
+        <td>
+          <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#trace" aria-expanded="false" aria-controls="trace">Stacktrace</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div id="trace" class="collapse card card-body mx-auto" style="width:90%">
+    <pre th:text="${trace}"></pre>
+  </div>
+  
+  <script th:src="@{/js/bootstrap.min.js}"></script>  
+  <script th:src="@{/js/jquery.min.js}"></script>
+  
+</body>
+</html>

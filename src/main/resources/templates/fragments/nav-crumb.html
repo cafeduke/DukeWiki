@@ -1,0 +1,10 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+  <nav th:fragment="nav-breadcrumb" aria-label="breadcrumb" class="navbar-light my-crumb" style="background-color: #e3f2fd;">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" th:each="curr : ${mapCrumbURI}"><a href="#" th:href="@{${curr.value}}">[[${curr.key}]]</a></li>
+    </ol>
+  </nav>
+</body>  
+</html>  

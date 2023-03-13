@@ -1,0 +1,25 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+  <form name="formLogout" method="POST" th:hidden="true" th:action="@{/logout}">
+      <input type="submit" value="Logout" />
+  </form>
+  
+  <nav th:fragment="nav-edit" class="navbar navbar-dark bg-v1">
+    <div class="px-2 d-flex flex-grow-1">
+      <a class="navbar-brand" href="/home">DukeWiki</a>
+      <span class="navbar-text">Welcome, [[${#authentication.name}]]</span>
+    </div>
+    <div class="px-3">
+      <button type="button" class="btn btn-success mx-1" onclick="save()">Save</button>
+      <button type="button" class="btn btn-danger mx-1" onclick="cancel()">Cancel</button>
+    </div>
+    <div class="px-2">
+      <button type="button" title="Logout" class="btn btn-warning mx-1" onclick="formLogout.submit();" >
+        <span class="material-icons">exit_to_app</span>
+      </button>
+    </div>    
+  </nav>
+</body>  
+</html>  

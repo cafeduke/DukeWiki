@@ -1,0 +1,173 @@
+/** 
+ * Markdown editor - WYSWYG
+ * ------------------------
+ */
+#dukemd {
+  width: 95%;
+  margin: auto;
+} 
+
+/* Mardown editor font */  
+#dukemd, #dukemd .toastui-editor-contents {
+  font-family: 'Roboto', 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 1em;
+  color: black;
+} 
+
+/* Mardown editor scroll */
+#dukemd .toastui-editor-main {
+    max-height: 80vh;
+    overflow: auto;
+}
+ 
+/* Headings */
+#dukemd h1, #dukemd h2, #dukemd h3, #dukemd h4, #dukemd h5, #dukemd h6 {
+  font-weight: normal;
+  font-family: "Roboto";
+  margin-bottom: 15px;
+  padding-bottom: 3px;
+}
+
+#dukemd h1 { font-size: 32px; color:rgb(0,100,180);  border-bottom: 2px groove rgba(0, 100, 220, 0.5) !important; }
+#dukemd h2 { font-size: 26px; color:rgb(0, 64,128);  border-bottom: 2px groove rgba(0, 100, 220, 0.2) !important; }
+#dukemd h3 { font-size: 20px; color:rgb(0, 50,100); }
+#dukemd h4 { font-size: 18px; color:rgb(0, 40, 80); }
+
+/* Quote */
+#dukemd blockquote {
+  border: 1px outset #f0f0ff;
+  border-left: 5px solid rgb(0,160,240);
+  padding: 5px;
+  background-color: rgb(230,240,250);    
+}
+
+#dukemd blockquote p {
+  margin-bottom: 0px;
+  color: rgb(0,40,80);
+  font-family: 'Vollkorn', 'Times New Roman';
+  font-style: italic;
+  font-size: 18px;
+}
+
+/* Inline code */
+#dukemd code {
+  color: rgb(0,64,128);
+  background-color: rgb(230,240,240);
+  padding: 0.2em 0.4em; 
+}
+
+/* Table */
+#dukemd table {
+    margin-bottom: 30px;
+    text-align: left;
+    color: rgb(0,40,0);
+    border-collapse: collapse;
+}
+
+#dukemd table th {
+    color: White;
+    background-color: rgb(70,110,0);
+    border: 1px solid rgb(143,184,20);
+}
+
+#dukemd table tr:nth-child(2n) {
+    background-color: rgb(244,250,239);
+}
+
+
+#dukemd table td {
+    border: 1px solid #8fb814;
+}
+
+#dukemd table th, #dukemd table td {
+    padding: 5px 10px;
+}
+
+/** 
+ * Variables for code block
+ * ------------------------
+ * Classes to highlight the code block 
+ */
+
+/* Code block */
+#dukemd pre code {
+  display: block;
+  overflow-x: auto;
+  -webkit-text-size-adjust: none;
+  
+  color:var(--text);
+  background: var(--background);
+
+  padding: 10px;
+  border: 1px solid rgb(0,160,240);
+  border-radius: 8px;
+  
+  font-weight: normal;
+  font-size: 16px;
+  font-family: "Ubuntu Mono", "Roboto Mono", Consolas, Menlo, Monaco, Monospace;
+  line-height: 20px;    
+}
+
+pre code *::selection {
+  background: var(--selection) !important;
+}
+
+#dukemd .operator {
+  color: var(--operator);
+}
+
+#dukemd .string {
+  color: var(--string);
+}
+
+#dukemd .number {
+  color: var(--number) !important;
+}
+
+#dukemd .class-name {
+  color: var(--classes) !important;
+  font-weight: bold;
+}
+
+#dukemd .boolean {
+  color: var(--built_in) !important;
+  font-weight: bold;
+}
+
+#dukemd .keyword {
+  color: var(--keyword) !important;
+  font-weight: bold;
+}
+
+#dukemd .function {
+  color: var(--function) !important;
+}
+
+#dukemd .comment {
+  color: var(--comment);
+}
+
+/** 
+ * Markdown editor
+ */
+
+.ProseMirror {
+  font-family: 'Roboto', 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 1em;
+  color: black;
+} 
+
+.toastui-editor-md-code-block-line-background {
+  color:var(--text);
+  background: var(--background);
+
+  font-weight: normal;
+  font-size: 16px;
+  font-family: "Ubuntu Mono", "Roboto Mono", Consolas, Menlo, Monaco, Monospace;
+  line-height: 20px;   
+  
+}
+
+.toastui-editor-defaultUI-toolbar {
+  background-color: rgb(230,240,255);
+}

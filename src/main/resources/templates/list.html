@@ -1,0 +1,246 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{/fragments/header-basic}"></head>
+<body>
+
+  <!-- Include basic navigation bar  -->  
+  <div th:replace="~{/fragments/nav-basic}"></div>  
+  
+  <!-- Include bread crumb  -->  
+  <div th:replace="~{/fragments/nav-crumb}"></div>    
+  
+  <div class="card w-75 mx-auto" style="min-width: 60%;">
+  
+    <!-- Card header with parent directory -->
+    <div class="card-header bg-v2 bg-gradient text-white">
+      <div class="container">
+        <div class="row">
+          <div class="col-8">[[${dirName}]]</div>
+          <div class="col d-flex justify-content-end">
+          
+            <!-- Button group with new -->            
+            <div class="btn-group" role="group" sec:authorize="hasRole('ROLE_ADMIN')">
+              <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">New</button>
+              <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <li><a class="dropdown-item" href="#" th:onclick="setupNewFile([[${dirPath}]]);">File</a></li>
+                <li><a class="dropdown-item" href="#" th:onclick="setupNewFolder([[${dirPath}]]);">Folder</a></li>
+              </ul>
+            </div>
+                        
+          </div>
+        </div>
+      </div>      
+    </div>
+    
+    <!-- Begin card List -->
+    <ul class="list-group list-group-flush">
+    
+      <!-- Dir list -->  
+      <li class="list-group-item" th:each="curr : ${subDirs}">
+        <div class="container">
+          <div class="row">
+            <div class="col-8 valign-child-center">
+              <span class="material-icons text-primary me-2">folder</span>
+              <a href="#" th:href="@{${dirPath} + '/' + ${curr}}">[[${curr}]]</a>
+            </div>
+            
+            <div class="col d-flex justify-content-end" sec:authorize="hasRole('ROLE_ADMIN')">
+              <div class="btn-group me-md-5">
+                <button type="button" class="btn btn-info" th:onclick="setupRename([[${dirPath}]], [[${curr}]]);">Rename</button>
+                <button type="button" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr}]]);">
+                  <span class="material-icons">delete</span>
+                </button>
+              </div>        
+            </div>
+            
+          </div>
+        </div>      
+      </li>
+      
+      <!-- Markdown file list -->
+      <li class="list-group-item" th:each="curr : ${subMdFiles}">
+        <div class="container">
+          <div class="row">
+            <div class="col-8 valign-child-center">
+              <span class="material-icons text-success me-2">article</span>
+              <a href="#" th:href="@{${dirPath} + '/' + ${curr}}">[[${curr}]]</a>
+            </div>
+            <div class="col d-flex justify-content-end" sec:authorize="hasRole('ROLE_ADMIN')">
+              <div class="btn-group me-md-5">
+                <button type="button" class="btn btn-primary" th:onclick="setupRename([[${dirPath}]], [[${curr}]]);">Rename</button>
+                <button type="button" class="btn btn-info" th:onclick="doEdit([[${dirPath}]], [[${curr}]]);">
+                    <span class="material-icons">edit</span>
+                </button>                
+                <button type="button" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr}]]);">
+                  <span class="material-icons">delete</span>
+                </button>
+              </div>        
+            </div>
+          </div>
+        </div>      
+      </li>
+      
+      <!-- Other file list -->
+      <li class="list-group-item" th:each="curr : ${subFiles}">
+        <div class="container">
+          <div class="row">
+            <div class="col-8 valign-child-center">
+              <span class="material-icons text-info me-2">note</span>
+              <a href="#" target="_blank" th:href="@{${dirPath} + '/' + ${curr}}">[[${curr}]]</a>
+            </div>
+            <div class="col d-flex justify-content-end" sec:authorize="hasRole('ROLE_ADMIN')">
+              <div class="btn-group me-md-5">
+                <button type="button" class="btn btn-primary" th:onclick="setupRename([[${dirPath}]], [[${curr}]]);">Rename</button>
+                <button type="button" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr}]]);">
+                  <span class="material-icons">delete</span>
+                </button>
+              </div>        
+            </div>
+          </div>
+        </div>      
+      </li>
+      
+      
+    </ul>
+    <!-- End card List -->
+  </div>  
+   
+  <!-- Form -->
+  <form id="my-form" action="/dummy.do" method="POST" th:hidden="true">
+    <input id="my-path" name="path" type="text" value="dummy">
+    <input id="my-new-name" name="name" type="text" value="dummy">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+  </form>
+  
+  <!-- Dialogs -->
+  
+  <div id="duke-modal-prompt" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="modal-input" class="col-form-label">Input:</label>
+            <input id="modal-input" class="form-control" type="text">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" name="ok" onclick="dukeModalPromptOk()" class="btn btn-primary">Ok</button>
+          <button type="button" name="cancel" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>  
+  
+  <div id="duke-modal-confirm" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Body</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" name="ok" onclick="dukeModalConfirmOk()" class="btn btn-primary">Ok</button>
+          <button type="button" name="cancel" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>  
+
+  <script th:src="@{/js/bootstrap.min.js}"></script>  
+  <script th:src="@{/js/jquery.min.js}"></script>
+  <script th:inline="javascript">
+      var contextRoot = /*[[@{/}]]*/ "";
+      contextRoot = contextRoot.replace(/\/$/, "");
+  </script>  
+  
+  <script>  
+  
+    function setupNewFile(path)
+    {
+    	  var action = contextRoot + '/new-file.do';
+    	  showPrompt(action, path, 'New file', 'The file shall be added under "' + path + '"');
+    }
+  
+    function setupNewFolder(path)
+    {
+    	  var action = contextRoot + '/new-folder.do';
+    	  showPrompt(action, path, 'New folder', 'The new folder shall be created under "' + path + '"');
+    }
+  
+    function doEdit(dir, file)
+    {
+    	  var path = dir + '/' + file;
+    	  var action = contextRoot + '/edit.do';
+        $('#my-form').attr('action', action);
+        $('#my-form #my-path').val(path);
+        $('#my-form').submit();
+    }
+  
+    function setupRename(dir, file)
+    {
+        var path = dir + '/' + file;
+        var action = contextRoot + '/rename.do';
+        showPrompt(action, path, 'Rename file', 'New name for "' + file + '"');
+    }
+    
+    function setupDelete(dir, file)
+    {
+    	  var path = dir + '/' + file;
+    	  var action = contextRoot + '/delete.do';
+    	
+    	  // Setup the form
+    	  $('#my-form').attr('action', action);
+    	  $('#my-form #my-path').val(path);
+
+    	  // Setup modal for deletion
+        $('#duke-modal-confirm .modal-title').text('Delete file');
+        $('#duke-modal-confirm .modal-body').find('p').html('Confirm deletion of ' + file);
+        $('#duke-modal-confirm').modal('show');
+    }
+    
+    function showPrompt (formAction, formPath, modalTitle, modalBody, )
+    {
+        $('#my-form').attr('action', formAction);
+        $('#my-form #my-path').val(formPath);
+        
+        // Setup modal for rename
+        $('#duke-modal-prompt .modal-title').text(modalTitle);
+        $('#duke-modal-prompt .modal-body .col-form-label').text(modalBody);
+        $('#duke-modal-prompt').modal('show');      
+    }
+    
+    function dukeModalPromptOk() 
+    {
+        // Get new name from modal and update the form
+        var name = $('#duke-modal-prompt #modal-input').val();
+        $('#my-form #my-new-name').val(name);
+        
+        // Dispose modal and submit for rename
+        $('#duke-modal-prompt').modal('hide');
+        $('#my-form').submit();
+    }    
+  
+    function dukeModalConfirmOk() 
+    {
+    	// Dispose modal and submit for deletion
+    	$('#duke-modal-confirm').modal('hide');
+    	$('#my-form').submit();
+    }  
+    
+    function test(arg)
+    {
+    	alert("Arg=" + arg);
+    }
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+/** 
+ * Core HTML classes
+ * -----------------
+ */
+ 
+:root {
+  --selection: rgba(20, 85, 100);  
+  --background: #00283C;
+  --text: #ffffff;
+  --string: #a0f000;
+  --number: #b478ff;
+  --classes: #50dc50;
+  --built_in: #ffa000;
+  --keyword: #5aaae6;
+  --function: #00E6F0;
+  --params: #508be5;
+  --comment: #608b4e;
+  --operator: #e6dc78;
+  
+  --bg-v1: rgb(80, 60, 120);
+  --bg-v2: rgb(0,100,160);
+}
+ 
+body {
+  background-color: whitesmoke;
+}
+
+.align-child-center {
+  display: flex;
+  justify-content: center;
+  align-items:center;  
+}
+
+.valign-child-center {
+  display: flex;
+  align-items:center;
+}
+
+/**
+ * Variations of bg
+ */
+.bg-v1 { background-color: var(--bg-v1); }
+.bg-v2 { background-color: var(--bg-v2);   }
+.bg-ubuntu { background:linear-gradient(45deg, #f57453, #77216f, #5e2750, #42002D); }
+
+/**
+ * Variations of text
+ */
+.text-dark-v1 { color: var(--bg-v1); }
+
+
+/* Crumb divider unicode */
+.my-crumb {
+  --bs-breadcrumb-divider: "\227B";
+}
+
+/**
+ * Customize bootstrap components
+ */
+ 
+/* Fix bootstrap icons*/
+button span.material-icons {
+  vertical-align: middle;  
+ }
+ 
+.card { 
+  box-shadow: 0 0 15px 0px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--bg-v2);
+}
+
+/**
+ * Effects
+ */
+.box-shadow {
+  box-shadow: 0 0 15px 0px rgba(0, 0, 0, 0.5);
+}
