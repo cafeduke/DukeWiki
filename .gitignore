@@ -1,7 +1,7 @@
 target/
 src/main/webapp/home/**
 .mvn
-.settings
+.settings/**
 **/*.class
 **/*.jar
 **/*.war
