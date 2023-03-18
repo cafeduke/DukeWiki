@@ -16,7 +16,7 @@
     <div class="card-header bg-v2 bg-gradient text-white">
       <div class="container">
         <div class="row">
-          <div class="col-8">[[${dirName}]]</div>
+          <div class="col-8 valign-child-center">[[${dirName}]]</div>
           <div class="col d-flex justify-content-end">
           
             <!-- Button group with new -->            
@@ -36,19 +36,40 @@
     <!-- Begin card List -->
     <ul class="list-group list-group-flush">
     
-      <!-- Dir list -->  
-      <li class="list-group-item" th:each="curr : ${subDirs}">
+      <!-- Heading -->
+      <li class="list-group-item bg-light-v1">
         <div class="container">
           <div class="row">
-            <div class="col-8 valign-child-center">
+            <div class="col-4 valign-child-center">Name</div>
+            <div class="col-2 valign-child-center">Date</div>
+            <div class="col-2 valign-child-center">Time</div>
+            <div class="col-1 valign-child-center halign-child-end">Size</div>
+            <div class="col valign-child-center"></div>
+          </div>
+        </div>
+      </li>
+    
+      <!-- Dir list -->  
+      <li class="list-group-item" th:each="curr : ${childDirs}">
+        <div class="container">
+          <div class="row">
+          
+            <div class="col-4 valign-child-center">
               <span class="material-icons text-primary me-2">folder</span>
-              <a href="#" th:href="@{${dirPath} + '/' + ${curr}}">[[${curr}]]</a>
+              <a href="#" th:href="@{${dirPath} + '/' + ${curr.name}}">[[${curr.name}]]</a>
             </div>
-            
+            <div class="col-2 valign-child-center">
+              <span class="text-info mono me-2" th:text="${curr.mdate}"></span>
+            </div>
+            <div class="col-2 valign-child-center">
+              <span class="text-info mono me-2" th:text="${curr.mtime}"></span>
+            </div>            
+            <div class="col-1"></div>
+                        
             <div class="col d-flex justify-content-end" sec:authorize="hasRole('ROLE_ADMIN')">
               <div class="btn-group me-md-5">
-                <button type="button" class="btn btn-info" th:onclick="setupRename([[${dirPath}]], [[${curr}]]);">Rename</button>
-                <button type="button" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr}]]);">
+                <button type="button" class="btn btn-info" th:onclick="setupRename([[${dirPath}]], [[${curr.name}]]);">Rename</button>
+                <button type="button" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr.name}]]);">
                   <span class="material-icons">delete</span>
                 </button>
               </div>        
@@ -59,20 +80,31 @@
       </li>
       
       <!-- Markdown file list -->
-      <li class="list-group-item" th:each="curr : ${subMdFiles}">
+      <li class="list-group-item" th:each="curr : ${childMdFiles}">
         <div class="container">
           <div class="row">
-            <div class="col-8 valign-child-center">
+          
+            <div class="col-4 valign-child-center">
               <span class="material-icons text-success me-2">article</span>
-              <a href="#" th:href="@{${dirPath} + '/' + ${curr}}">[[${curr}]]</a>
+              <a href="#" th:href="@{${dirPath} + '/' + ${curr.name}}">[[${curr.name}]]</a>
             </div>
+            <div class="col-2 valign-child-center">
+              <span class="text-info mono me-2" th:text="${curr.mdate}"></span>
+            </div>
+            <div class="col-2 valign-child-center">
+              <span class="text-info mono me-2" th:text="${curr.mtime}"></span>
+            </div>            
+            <div class="col-1 valign-child-center halign-child-end">
+              <span class="text-info mono me-2" th:text="${curr.size}"></span>
+            </div>
+                        
             <div class="col d-flex justify-content-end" sec:authorize="hasRole('ROLE_ADMIN')">
               <div class="btn-group me-md-5">
-                <button type="button" class="btn btn-primary" th:onclick="setupRename([[${dirPath}]], [[${curr}]]);">Rename</button>
-                <button type="button" class="btn btn-info" th:onclick="doEdit([[${dirPath}]], [[${curr}]]);">
+                <button type="button" class="btn btn-primary" th:onclick="setupRename([[${dirPath}]], [[${curr.name}]]);">Rename</button>
+                <button type="button" class="btn btn-info" th:onclick="doEdit([[${dirPath}]], [[${curr.name}]]);">
                     <span class="material-icons">edit</span>
                 </button>                
-                <button type="button" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr}]]);">
+                <button type="button" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr.name}]]);">
                   <span class="material-icons">delete</span>
                 </button>
               </div>        
@@ -82,17 +114,28 @@
       </li>
       
       <!-- Other file list -->
-      <li class="list-group-item" th:each="curr : ${subFiles}">
+      <li class="list-group-item" th:each="curr : ${childFiles}">
         <div class="container">
           <div class="row">
-            <div class="col-8 valign-child-center">
+          
+            <div class="col-4 valign-child-center">
               <span class="material-icons text-info me-2">note</span>
-              <a href="#" target="_blank" th:href="@{${dirPath} + '/' + ${curr}}">[[${curr}]]</a>
+              <a href="#" target="_blank" th:href="@{${dirPath} + '/' + ${curr.name}}">[[${curr.name}]]</a>
             </div>
+            <div class="col-2 valign-child-center">
+              <span class="text-info mono me-2" th:text="${curr.mdate}"></span>
+            </div>
+            <div class="col-2 valign-child-center">
+              <span class="text-info mono me-2" th:text="${curr.mtime}"></span>
+            </div>            
+            <div class="col-1 valign-child-center halign-child-end">
+              <span class="text-info mono me-2" th:text="${curr.size}"></span>
+            </div>            
+            
             <div class="col d-flex justify-content-end" sec:authorize="hasRole('ROLE_ADMIN')">
               <div class="btn-group me-md-5">
-                <button type="button" class="btn btn-primary" th:onclick="setupRename([[${dirPath}]], [[${curr}]]);">Rename</button>
-                <button type="button" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr}]]);">
+                <button type="button" class="btn btn-primary" th:onclick="setupRename([[${dirPath}]], [[${curr.name}]]);">Rename</button>
+                <button type="button" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr.name}]]);">
                   <span class="material-icons">delete</span>
                 </button>
               </div>        

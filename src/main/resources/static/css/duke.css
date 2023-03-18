@@ -19,10 +19,23 @@
   
   --bg-v1: rgb(80, 60, 120);
   --bg-v2: rgb(0,100,160);
+  
+  --bg-light-v1: rgb(230,240,255);
 }
  
 body {
   background-color: whitesmoke;
+}
+
+/** 
+ * Custom classes for bootstrap
+ * ----------------------------
+ */
+ 
+.mono {
+  font-size: 14px;
+  font-family: "Roboto Mono";
+  font-weight: bold;
 }
 
 .align-child-center {
@@ -36,6 +49,11 @@ body {
   align-items:center;
 }
 
+.halign-child-end {
+  display: flex;
+  justify-content: end;
+}
+
 /**
  * Variations of bg
  */
@@ -43,10 +61,14 @@ body {
 .bg-v2 { background-color: var(--bg-v2);   }
 .bg-ubuntu { background:linear-gradient(45deg, #f57453, #77216f, #5e2750, #42002D); }
 
+.bg-light-v1 { background-color: var(--bg-light-v1); };
+
 /**
  * Variations of text
  */
-.text-dark-v1 { color: var(--bg-v1); }
+.text-dark-v1 { 
+  color: var(--bg-v1); 
+}
 
 
 /* Crumb divider unicode */

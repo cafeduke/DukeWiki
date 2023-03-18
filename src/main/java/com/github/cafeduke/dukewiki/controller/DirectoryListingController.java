@@ -3,6 +3,7 @@ package com.github.cafeduke.dukewiki.controller;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Stream;
 import org.apache.commons.io.FileUtils;
@@ -21,6 +22,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import jakarta.servlet.ServletContext;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.commonmark.Extension;
 import org.commonmark.ext.gfm.tables.TablesExtension;
 import org.commonmark.node.*;
@@ -37,7 +41,8 @@ public class DirectoryListingController
     
     public static void main (String arg[])
     {
-        System.out.println(Path.of("/a/b/c//").toString());
+        FileInfo info = new FileInfo (new File("/home/raghu"));
+        System.out.println(info.getName());
     }
     
     @GetMapping("/work.do")
@@ -67,20 +72,17 @@ public class DirectoryListingController
         if(!context.fileTarget.isDirectory())
             return viewName;
         
-        List<String> listDir  = Stream.of(context.fileTarget.listFiles(f -> f.isDirectory()))
-            .map(f -> f.getName())
-            .sorted()
-            .toList();
-
-        List<String> listMdFile = new ArrayList<>();
-        List<String> listOtherFile = new ArrayList<>();
+        List<FileInfo> listDir = FileInfo.getInfo(context.fileTarget.listFiles(f -> f.isDirectory()));
+        
+        List<FileInfo> listMdFile = new ArrayList<>();
+        List<FileInfo> listOtherFile = new ArrayList<>();
         for (File file : context.fileTarget.listFiles(f -> f.isFile()))
         {
-            String name = file.getName();
-            List<String> list = (name.endsWith(".md")) ? listMdFile : listOtherFile;
-            list.add(name);
+            List<FileInfo> list = (file.getName().endsWith(".md")) ? listMdFile : listOtherFile;
+            list.add(new FileInfo(file));
         }
         
+        Collections.sort(listDir);
         Collections.sort(listMdFile);
         Collections.sort(listOtherFile);
         
@@ -89,12 +91,12 @@ public class DirectoryListingController
         model.addAttribute("dirName", context.fileTarget.getName());
         model.addAttribute("dirPath", context.requestURI);
         model.addAttribute("mapCrumbURI", mapCrumbURI);
-        model.addAttribute("subDirs", listDir);
-        model.addAttribute("subMdFiles", listMdFile);                
-        model.addAttribute("subFiles", listOtherFile);
+        model.addAttribute("childDirs", listDir);
+        model.addAttribute("childMdFiles", listMdFile);                
+        model.addAttribute("childFiles", listOtherFile);
         
         return viewName;
-    }    
+    }
     
     @GetMapping("/render.do")
     public String doRender (ModelMap model, @RequestParam("path") String path) throws IOException
@@ -263,6 +265,50 @@ public class DirectoryListingController
             mapCrumbURI.put(crumb, prefix);
         }     
         return mapCrumbURI;
+    }
+    
+    public static class FileInfo implements Comparable<FileInfo>
+    {
+        public static final SimpleDateFormat formatDate = new SimpleDateFormat("EEE, dd-MMM-yyyy");
+        
+        public static final SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm:ss a", Locale.US);
+
+        @Getter
+        @Setter    
+        private String name, mdate, mtime, size;
+        
+        public FileInfo (File file)
+        {
+            this.name = file.getName();
+            this.mdate = formatDate.format(new Date(file.lastModified()));
+            this.mtime = formatTime.format(new Date(file.lastModified()));
+            this.size = null;
+            
+            long len = file.length();            
+            long bucketSize[] = new long [] {1000000000L, 1000000L, 1000L}; 
+            String bucketName[] = new String[] {"GB", "MB", "KB"};            
+            for (int i = 0; i < bucketSize.length; ++i)
+                if (len >= bucketSize[i])
+                {
+                   size = String.format("%.1f %s", ((double)len/bucketSize[i]) ,bucketName[i]);
+                   break;
+                }
+            if (this.size == null)
+                this.size = String.valueOf(file.length()) + " B";
+        }
+        
+        public static List<FileInfo> getInfo (File... file)
+        {
+           return new ArrayList<FileInfo> (Stream.of(file)
+             .map(f -> new FileInfo(f))
+             .toList());
+        }
+
+        @Override
+        public int compareTo(FileInfo info)
+        {
+            return this.name.compareTo(info.name);
+        }
     }
     
     private class PathContext
