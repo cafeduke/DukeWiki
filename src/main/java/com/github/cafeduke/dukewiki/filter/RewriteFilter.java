@@ -29,14 +29,15 @@ public class RewriteFilter implements Filter
         
         // Directory listing is only for directories that start with URI_HOME
         if (requestURI.startsWith(URI_HOME) )
-        {
-           
+        {          
            // String requestURIRewrite = contextRoot;
            String requestURIRewrite = "";
            if (fileTarget.isDirectory())
                requestURIRewrite += "/list.do?path=" + requestURI;
            else if (fileTarget.getName().endsWith(".md"))
-               requestURIRewrite += "/render.do?path=" + requestURI;
+               requestURIRewrite += "/renderMd.do?path=" + requestURI;
+           else if (fileTarget.getName().endsWith(".txt"))
+               requestURIRewrite += "/renderTxt.do?path=" + requestURI;
            else
                requestURIRewrite += "/download.do?path=" + requestURI;
            

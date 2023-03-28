@@ -165,9 +165,59 @@ pre code *::selection {
   font-size: 16px;
   font-family: "Ubuntu Mono", "Roboto Mono", Consolas, Menlo, Monaco, Monospace;
   line-height: 20px;   
-  
 }
 
 .toastui-editor-defaultUI-toolbar {
   background-color: rgb(230,240,255);
 }
+
+/** 
+ * Text view
+ * ---------
+ */
+ 
+#duketxt {
+  width: 100%;
+  margin: auto;
+}
+
+#duketxt textarea{
+  max-height: 85vh;
+  width: 100%;
+  padding: 10px;
+  
+  font-weight: normal;
+  font-size: 18px;
+  font-family: "Ubuntu Mono", Consolas, Menlo, Monaco, Monospace;
+  line-height: 20px;
+  color:Black;  
+}
+
+ 
+#duketxt pre {
+  margin: initial;
+  font-weight: normal;
+  font-size: 18px;
+  font-family: "Ubuntu Mono", Consolas, Menlo, Monaco, Monospace;
+  line-height: 20px;
+  color:Black;
+}
+
+#comment {
+  color:rgb(0,128,0);
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,56 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{/fragments/header-basic}"></head>
+<body>
+
+  <!-- Include edit navigation bar  -->  
+  <div th:replace="~{/fragments/nav-basic}"></div>  
+  
+  <!-- Include breadcrumb  -->  
+  <div th:replace="~{/fragments/nav-crumb}"></div>    
+  
+  <p class="py-1"></p>
+  
+  <div class="card mx-auto my-3" style="min-width: 80%; width: 95%">
+    <div class="card-header bg-v2 d-flex">
+      <div class="text-white valign-child-center flex-grow-1" th:text="${fileName}"></div>
+      
+      <div class="justify-content-end" sec:authorize="hasRole('ROLE_ADMIN')">
+        <button type="button" class="btn btn-secondary" th:onclick="doEditMd([[${path}]], [[${fileName}]]);">
+            <span class="material-icons">edit</span>
+        </button>                
+      </div>
+    </div>
+    <div id="dukemd" class="card-body" th:utext="${content}"></div>
+  </div>
+  
+  <!-- Form -->
+  <form id="my-form" action="/dummy.do" method="POST" th:hidden="true">
+    <input id="my-path" name="path" type="text" value="dummy">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+  </form>  
+    
+  <script th:src="@{/js/bootstrap.min.js}"></script>  
+  <script th:src="@{/js/jquery.min.js}"></script>
+  <script th:inline="javascript">
+      var contextRoot = /*[[@{/}]]*/ "";
+      contextRoot = contextRoot.replace(/\/$/, "");
+  </script>  
+  
+  <script>  
+  
+    function doEditMd(dir, file)
+    {
+        var path = dir + '/' + file;
+        var action = contextRoot + '/editMd.do';
+        $('#my-form').attr('action', action);
+        $('#my-form #my-path').val(path);
+        $('#my-form').submit();	  
+    }
+  
+  </script>
+   
+</body>
+</html>

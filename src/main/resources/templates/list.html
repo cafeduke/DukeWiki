@@ -101,7 +101,7 @@
             <div class="col d-flex justify-content-end" sec:authorize="hasRole('ROLE_ADMIN')">
               <div class="btn-group me-md-5">
                 <button type="button" class="btn btn-primary" th:onclick="setupRename([[${dirPath}]], [[${curr.name}]]);">Rename</button>
-                <button type="button" class="btn btn-info" th:onclick="doEdit([[${dirPath}]], [[${curr.name}]]);">
+                <button type="button" class="btn btn-info" th:onclick="doEditMd([[${dirPath}]], [[${curr.name}]]);">
                     <span class="material-icons">edit</span>
                 </button>                
                 <button type="button" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr.name}]]);">
@@ -113,13 +113,47 @@
         </div>      
       </li>
       
+      <!-- Text file list -->
+      <li class="list-group-item" th:each="curr : ${childTxtFiles}">
+        <div class="container">
+          <div class="row">
+          
+            <div class="col-4 valign-child-center">
+              <span class="material-icons text-primary me-2">article</span>
+              <a href="#" th:href="@{${dirPath} + '/' + ${curr.name}}">[[${curr.name}]]</a>
+            </div>
+            <div class="col-2 valign-child-center">
+              <span class="text-info mono me-2" th:text="${curr.mdate}"></span>
+            </div>
+            <div class="col-2 valign-child-center">
+              <span class="text-info mono me-2" th:text="${curr.mtime}"></span>
+            </div>            
+            <div class="col-1 valign-child-center halign-child-end">
+              <span class="text-info mono me-2" th:text="${curr.size}"></span>
+            </div>
+                        
+            <div class="col d-flex justify-content-end" sec:authorize="hasRole('ROLE_ADMIN')">
+              <div class="btn-group me-md-5">
+                <button type="button" class="btn btn-primary" th:onclick="setupRename([[${dirPath}]], [[${curr.name}]]);">Rename</button>
+                <button type="button" class="btn btn-info" th:onclick="doEditTxt([[${dirPath}]], [[${curr.name}]]);">
+                    <span class="material-icons">edit</span>
+                </button>                
+                <button type="button" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr.name}]]);">
+                  <span class="material-icons">delete</span>
+                </button>
+              </div>        
+            </div>
+          </div>
+        </div>      
+      </li>      
+      
       <!-- Other file list -->
       <li class="list-group-item" th:each="curr : ${childFiles}">
         <div class="container">
           <div class="row">
           
             <div class="col-4 valign-child-center">
-              <span class="material-icons text-info me-2">note</span>
+              <span class="material-icons text-info me-2">description</span>
               <a href="#" target="_blank" th:href="@{${dirPath} + '/' + ${curr.name}}">[[${curr.name}]]</a>
             </div>
             <div class="col-2 valign-child-center">
@@ -217,11 +251,20 @@
     	  var action = contextRoot + '/new-folder.do';
     	  showPrompt(action, path, 'New folder', 'The new folder shall be created under "' + path + '"');
     }
+    
+    function doEditTxt(dir, file)
+    {
+        var path = dir + '/' + file;
+        var action = contextRoot + '/editTxt.do';
+        $('#my-form').attr('action', action);
+        $('#my-form #my-path').val(path);
+        $('#my-form').submit();
+    }    
   
-    function doEdit(dir, file)
+    function doEditMd(dir, file)
     {
     	  var path = dir + '/' + file;
-    	  var action = contextRoot + '/edit.do';
+    	  var action = contextRoot + '/editMd.do';
         $('#my-form').attr('action', action);
         $('#my-form #my-path').val(path);
         $('#my-form').submit();

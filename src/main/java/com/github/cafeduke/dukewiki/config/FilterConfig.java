@@ -11,8 +11,7 @@ public class FilterConfig
     @Bean
     public FilterRegistrationBean<RewriteFilter> loggingFilter()
     {
-        FilterRegistrationBean<RewriteFilter> registrationBean = new FilterRegistrationBean<>();
-        
+        FilterRegistrationBean<RewriteFilter> registrationBean = new FilterRegistrationBean<>(); 
         registrationBean.setFilter(new RewriteFilter());
         registrationBean.addUrlPatterns("/home/*");
         registrationBean.setOrder(1);

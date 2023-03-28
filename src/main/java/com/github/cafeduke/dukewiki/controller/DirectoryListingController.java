@@ -36,13 +36,39 @@ public class DirectoryListingController
 {
     public static final String URI_HOME = "/home";
     
+    public static final String LINESEP = System.getProperty("line.separator");
+    
     @Autowired
     ServletContext servletContext;
     
-    public static void main (String arg[])
+    public static void main (String arg[]) throws IOException
     {
-        FileInfo info = new FileInfo (new File("/home/raghu"));
-        System.out.println(info.getName());
+        String text = "\n\n\nHello how are you\n Ok then\n\n##comment here\nThis is #inline\nBye then\n";
+        System.out.println("-----------------------------------------");
+        System.out.println(text);
+        System.out.println("-----------------------------------------");
+        
+        StringBuilder buffer = new StringBuilder();
+        BufferedReader in = new BufferedReader(new StringReader(text));
+        String line = null;        
+        String styleBegin = "<pre id=\"comment\">";
+        String plainBegin = "<pre>";
+        String end   = "</pre>";
+        while ((line = in.readLine()) != null)
+        {
+            int index = line.indexOf('#');
+            if (index == -1)
+               buffer.append(plainBegin).append(line).append(end); 
+            else if (index == 0)
+               buffer.append(styleBegin).append(line).append(end); 
+            else
+               buffer.append(plainBegin).append(line.substring(0, index)).append(end)
+                     .append(styleBegin).append(line.substring(index)).append(end);
+            buffer.append(LINESEP);
+        }
+        in.close();        
+        
+        System.out.println(buffer.toString());
     }
     
     @GetMapping("/work.do")
@@ -75,10 +101,11 @@ public class DirectoryListingController
         List<FileInfo> listDir = FileInfo.getInfo(context.fileTarget.listFiles(f -> f.isDirectory()));
         
         List<FileInfo> listMdFile = new ArrayList<>();
+        List<FileInfo> listTxtFile = new ArrayList<>();
         List<FileInfo> listOtherFile = new ArrayList<>();
         for (File file : context.fileTarget.listFiles(f -> f.isFile()))
         {
-            List<FileInfo> list = (file.getName().endsWith(".md")) ? listMdFile : listOtherFile;
+            List<FileInfo> list = file.getName().endsWith(".md") ? listMdFile : (file.getName().endsWith(".txt") ? listTxtFile : listOtherFile);
             list.add(new FileInfo(file));
         }
         
@@ -92,16 +119,17 @@ public class DirectoryListingController
         model.addAttribute("dirPath", context.requestURI);
         model.addAttribute("mapCrumbURI", mapCrumbURI);
         model.addAttribute("childDirs", listDir);
-        model.addAttribute("childMdFiles", listMdFile);                
+        model.addAttribute("childMdFiles", listMdFile);
+        model.addAttribute("childTxtFiles", listTxtFile);
         model.addAttribute("childFiles", listOtherFile);
         
         return viewName;
     }
     
-    @GetMapping("/render.do")
-    public String doRender (ModelMap model, @RequestParam("path") String path) throws IOException
+    @GetMapping("/renderMd.do")
+    public String doRenderMd (ModelMap model, @RequestParam("path") String path) throws IOException
     {
-        String viewName = "render";
+        String viewName = "renderMd";
         PathContext context = this.new PathContext(path);
         String contentMd = Files.readString (context.fileTarget.toPath());
     
@@ -113,22 +141,66 @@ public class DirectoryListingController
         HtmlRenderer renderer = HtmlRenderer.builder().extensions(extensions).build();
         Node document = parser.parse(contentMd);
         String contentHtml = renderer.render(document); 
-        // System.out.println("[doRender] Html=" + contentHtml);
+        // System.out.println("[doRender] Html=" + contentHtml);        
         
         Map<String,String> mapCrumbURI = getBreadcrumbs(context.requestURI);
         model.addAttribute("content", contentHtml);
+        model.addAttribute("mapCrumbURI", mapCrumbURI);
+        model.addAttribute("path", context.parentURI);
+        model.addAttribute("fileName", context.fileTarget.getName());
+        
+        return viewName;
+    }
+    
+    @GetMapping("/renderTxt.do")
+    public String doRenderTxt (ModelMap model, @RequestParam("path") String path) throws IOException
+    {
+        String viewName = "renderTxt";
+        
+        PathContext context = this.new PathContext(path);
+        String contentTxt = Files.readString (context.fileTarget.toPath());
+
+        Map<String,String> mapCrumbURI = getBreadcrumbs(context.requestURI);
+        model.addAttribute("content", convertTextToHtml(contentTxt));
         model.addAttribute("mapCrumbURI", mapCrumbURI);
         model.addAttribute("path", Path.of(context.requestURI).getParent().toString());
         model.addAttribute("fileName", context.fileTarget.getName());
         
         return viewName;
     }
-
-    @PostMapping("/edit.do")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public String doEdit(ModelMap model, @RequestParam String path) throws IOException
+    
+    public String convertTextToHtml (String text) throws IOException
     {
-        String viewName = "edit";
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(LINESEP).append("<pre>").append(LINESEP);
+        
+        BufferedReader in = new BufferedReader(new StringReader(text));
+        String line = null;        
+        String styleBegin = "<span id=\"comment\">";
+        String end   = "</span>";
+        while ((line = in.readLine()) != null)
+        {
+            int index = line.indexOf('#');
+            if (index == -1)
+               buffer.append(line); 
+            else if (index == 0)
+               buffer.append(styleBegin).append(line).append(end); 
+            else
+               buffer.append(line.substring(0, index))
+                     .append(styleBegin).append(line.substring(index)).append(end);
+            buffer.append(LINESEP);
+        }
+        in.close();        
+        buffer.append(LINESEP).append("</pre>").append(LINESEP);
+        return buffer.toString();
+    }
+    
+
+    @PostMapping("/editMd.do")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public String doEditMd(ModelMap model, @RequestParam String path) throws IOException
+    {
+        String viewName = "editMd";
         PathContext context = this.new PathContext(path);
         
         model.addAttribute("fileName", context.fileTarget.getName());
@@ -137,6 +209,19 @@ public class DirectoryListingController
         
         return viewName;
     }
+    
+    @PostMapping("/editTxt.do")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public String doEditTxt(ModelMap model, @RequestParam String path) throws IOException
+    {
+        String viewName = "editTxt";
+        PathContext context = this.new PathContext(path);
+        
+        model.addAttribute("fileName", context.fileTarget.getName());
+        model.addAttribute("path", context.requestURI);
+        model.addAttribute("content", Files.readString (context.fileTarget.toPath()));
+        return viewName;
+    }    
 
     @PostMapping("/save.do")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -177,7 +262,7 @@ public class DirectoryListingController
         .append("\n");
         Files.writeString(fileNew.toPath(), builder.toString());  
         
-        return doEdit(model, Path.of(path, name).toString());
+        return doEditMd(model, Path.of(path, name).toString());
     }    
     
     @PostMapping("/new-folder.do")
