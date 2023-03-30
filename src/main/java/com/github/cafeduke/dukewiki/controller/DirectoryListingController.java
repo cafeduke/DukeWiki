@@ -251,18 +251,24 @@ public class DirectoryListingController
     {
         PathContext context = this.new PathContext(path);
         File fileNew = new File(context.fileTarget, name);
-        
         StringBuilder builder = new StringBuilder ();
-        builder.append("# Title ").append("\n")
-        .append("# Introduction ").append("\n")
-        .append("Introduction goes here ").append("\n")        
-        .append("\n")
-        .append("# Detail ").append("\n")
-        .append("Details go here ").append("\n")
-        .append("\n");
-        Files.writeString(fileNew.toPath(), builder.toString());  
+        boolean isText = name.endsWith(".txt");
         
-        return doEditMd(model, Path.of(path, name).toString());
+        if (isText)
+            builder.append("# Content meta-data goes here... (Note a '#' prefix)").append("\n")
+               .append("Content goes here...").append("\n");
+        else
+            builder.append("# Title ").append("\n")
+                .append("# Introduction ").append("\n")
+                .append("Introduction goes here ").append("\n")        
+                .append("\n")
+                .append("# Detail ").append("\n")
+                .append("Details go here ").append("\n")
+                .append("\n");
+        Files.writeString(fileNew.toPath(), builder.toString());
+        
+        return (isText) ? doEditTxt (model, Path.of(path, name).toString()) : 
+                          doEditMd  (model, Path.of(path, name).toString()); 
     }    
     
     @PostMapping("/new-folder.do")
