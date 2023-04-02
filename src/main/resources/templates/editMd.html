@@ -1,13 +1,13 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{/fragments/header-edit}"></head>
-<body >
+<body>
 
   <!-- Include edit navigation bar  -->  
   <div th:replace="~{/fragments/nav-edit}"></div>  
   
-  <nav class="navbar-light" style="background-color: #e3f2fd;">
-    <div class="d-flex flex-grow-1" th:text="${path}">path</div>
+  <nav class="navbar-light">
+    <div class="d-flex flex-grow-1 px-2" th:text="${path}">path</div>
   </nav>  
   
   <form id="my-form" th:action="@{/save.do}" method="POST">
@@ -17,7 +17,7 @@
   </form>
 
   <p></p>
-  <div id="dukemd" class="box-shadow"></div>
+  <div id="dukemd" class="dukecard"></div>
 
   <script th:src="@{/js/bootstrap.min.js}"></script>  
   <script th:src="@{/js/jquery.min.js}"></script>

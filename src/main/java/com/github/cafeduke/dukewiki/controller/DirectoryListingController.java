@@ -91,7 +91,6 @@ public class DirectoryListingController
     @GetMapping("/list.do")
     public String doList(ModelMap model, @RequestParam(defaultValue = URI_HOME) String path)
     {
-        System.out.println("[list.do] In here");
         String viewName = "list";
         PathContext context = this.new PathContext(path);
         
@@ -141,7 +140,6 @@ public class DirectoryListingController
         HtmlRenderer renderer = HtmlRenderer.builder().extensions(extensions).build();
         Node document = parser.parse(contentMd);
         String contentHtml = renderer.render(document); 
-        // System.out.println("[doRender] Html=" + contentHtml);        
         
         Map<String,String> mapCrumbURI = getBreadcrumbs(context.requestURI);
         model.addAttribute("content", contentHtml);
@@ -360,9 +358,9 @@ public class DirectoryListingController
     
     public static class FileInfo implements Comparable<FileInfo>
     {
-        public static final SimpleDateFormat formatDate = new SimpleDateFormat("EEE, dd-MMM-yyyy");
+        public static final SimpleDateFormat formatDate = new SimpleDateFormat("EEE dd-MMM-yyyy");
         
-        public static final SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm:ss a", Locale.US);
+        public static final SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm a", Locale.US);
 
         @Getter
         @Setter    

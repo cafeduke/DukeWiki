@@ -1,18 +1,18 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{/fragments/header-basic}"></head>
-<body >
+<body>
 
   <!-- Include edit navigation bar  -->  
   <div th:replace="~{/fragments/nav-edit}"></div>  
   
-  <nav class="navbar-light" style="background-color: #e3f2fd;">
+  <nav class="navbar-light bg-light-v1 px-2">
     <div class="d-flex flex-grow-1" th:text="${path}">path</div>
   </nav>  
   
   <form id="my-form" class="align-child-center mt-3" th:action="@{/save.do}" method="POST">
   
-    <div id="duketxt" class="card mx-auto my-3" style="min-width: 80%; width: 95%">
+    <div id="duketxt" class="dukecard card mx-auto my-3">
       <div class="card-header text-white bg-v2 d-flex">
         <span class="material-icons">edit_note</span>
         <span class="mx-1"><b>Editing: </b></span>

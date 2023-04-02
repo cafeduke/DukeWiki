@@ -10,7 +10,7 @@
   <!-- Include bread crumb  -->  
   <div th:replace="~{/fragments/nav-crumb}"></div>    
   
-  <div class="card w-75 mx-auto" style="min-width: 60%;">
+  <div class="dukecard card mx-5">
   
     <!-- Card header with parent directory -->
     <div class="card-header bg-v2 bg-gradient text-white">
@@ -43,7 +43,7 @@
             <div class="col-4 valign-child-center">Name</div>
             <div class="col-2 valign-child-center">Date</div>
             <div class="col-2 valign-child-center">Time</div>
-            <div class="col-1 valign-child-center halign-child-end">Size</div>
+            <div class="col-2 valign-child-center halign-child-end">Size</div>
             <div class="col valign-child-center"></div>
           </div>
         </div>
@@ -64,12 +64,14 @@
             <div class="col-2 valign-child-center">
               <span class="text-info mono me-2" th:text="${curr.mtime}"></span>
             </div>            
-            <div class="col-1"></div>
+            <div class="col-2"></div>
                         
             <div class="col d-flex justify-content-end" sec:authorize="hasRole('ROLE_ADMIN')">
-              <div class="btn-group me-md-5">
-                <button type="button" class="btn btn-info" th:onclick="setupRename([[${dirPath}]], [[${curr.name}]]);">Rename</button>
-                <button type="button" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr.name}]]);">
+              <div class="btn-group me-md-3">
+                <button type="button" data-toggle="tooltip" data-placement="bottom" title="Rename" class="btn btn-primary" th:onclick="setupRename([[${dirPath}]], [[${curr.name}]]);">
+                  <span class="material-symbols-sharp">text_select_move_back_character</span>
+                </button>
+                <button type="button" data-toggle="tooltip" data-placement="bottom" title="Delete" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr.name}]]);">
                   <span class="material-icons">delete</span>
                 </button>
               </div>        
@@ -94,17 +96,19 @@
             <div class="col-2 valign-child-center">
               <span class="text-info mono me-2" th:text="${curr.mtime}"></span>
             </div>            
-            <div class="col-1 valign-child-center halign-child-end">
+            <div class="col-2 valign-child-center halign-child-end">
               <span class="text-info mono me-2" th:text="${curr.size}"></span>
             </div>
                         
             <div class="col d-flex justify-content-end" sec:authorize="hasRole('ROLE_ADMIN')">
-              <div class="btn-group me-md-5">
-                <button type="button" class="btn btn-primary" th:onclick="setupRename([[${dirPath}]], [[${curr.name}]]);">Rename</button>
-                <button type="button" class="btn btn-info" th:onclick="doEditMd([[${dirPath}]], [[${curr.name}]]);">
-                    <span class="material-icons">edit</span>
+              <div class="btn-group me-md-3">
+                <button type="button" data-toggle="tooltip" data-placement="bottom" title="Rename" class="btn btn-primary" th:onclick="setupRename([[${dirPath}]], [[${curr.name}]]);">
+                  <span class="material-symbols-sharp">text_select_move_back_character</span>
+                </button>
+                <button type="button" data-toggle="tooltip" data-placement="bottom" title="Edit" class="btn btn-info" th:onclick="doEditMd([[${dirPath}]], [[${curr.name}]]);">
+                  <span class="material-icons">edit</span>
                 </button>                
-                <button type="button" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr.name}]]);">
+                <button type="button" data-toggle="tooltip" data-placement="bottom" title="Delete" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr.name}]]);">
                   <span class="material-icons">delete</span>
                 </button>
               </div>        
@@ -128,17 +132,19 @@
             <div class="col-2 valign-child-center">
               <span class="text-info mono me-2" th:text="${curr.mtime}"></span>
             </div>            
-            <div class="col-1 valign-child-center halign-child-end">
+            <div class="col-2 valign-child-center halign-child-end">
               <span class="text-info mono me-2" th:text="${curr.size}"></span>
             </div>
                         
             <div class="col d-flex justify-content-end" sec:authorize="hasRole('ROLE_ADMIN')">
-              <div class="btn-group me-md-5">
-                <button type="button" class="btn btn-primary" th:onclick="setupRename([[${dirPath}]], [[${curr.name}]]);">Rename</button>
-                <button type="button" class="btn btn-info" th:onclick="doEditTxt([[${dirPath}]], [[${curr.name}]]);">
+              <div class="btn-group me-md-3">
+                <button type="button" data-toggle="tooltip" data-placement="bottom" title="Rename" class="btn btn-primary" th:onclick="setupRename([[${dirPath}]], [[${curr.name}]]);">
+                  <span class="material-symbols-sharp">text_select_move_back_character</span>
+                </button>
+                <button type="button" data-toggle="tooltip" data-placement="bottom" title="Edit" class="btn btn-info" th:onclick="doEditTxt([[${dirPath}]], [[${curr.name}]]);">
                     <span class="material-icons">edit</span>
                 </button>                
-                <button type="button" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr.name}]]);">
+                <button type="button" data-toggle="tooltip" data-placement="bottom" title="Delete" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr.name}]]);">
                   <span class="material-icons">delete</span>
                 </button>
               </div>        
@@ -162,14 +168,16 @@
             <div class="col-2 valign-child-center">
               <span class="text-info mono me-2" th:text="${curr.mtime}"></span>
             </div>            
-            <div class="col-1 valign-child-center halign-child-end">
+            <div class="col-2 valign-child-center halign-child-end">
               <span class="text-info mono me-2" th:text="${curr.size}"></span>
             </div>            
             
             <div class="col d-flex justify-content-end" sec:authorize="hasRole('ROLE_ADMIN')">
-              <div class="btn-group me-md-5">
-                <button type="button" class="btn btn-primary" th:onclick="setupRename([[${dirPath}]], [[${curr.name}]]);">Rename</button>
-                <button type="button" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr.name}]]);">
+              <div class="btn-group me-md-3">
+                <button type="button" data-toggle="tooltip" data-placement="bottom" title="Rename" class="btn btn-primary" th:onclick="setupRename([[${dirPath}]], [[${curr.name}]]);">
+                  <span class="material-symbols-sharp">text_select_move_back_character</span>
+                </button>
+                <button type="button" data-toggle="tooltip" data-placement="bottom" title="Delete" class="btn btn-danger"  th:onclick="setupDelete([[${dirPath}]], [[${curr.name}]]);">
                   <span class="material-icons">delete</span>
                 </button>
               </div>        
@@ -217,7 +225,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" data-toggle="tooltip" data-placement="bottom" title="Rename" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <p>Body</p>

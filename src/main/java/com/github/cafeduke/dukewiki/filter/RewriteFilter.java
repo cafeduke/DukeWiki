@@ -25,8 +25,6 @@ public class RewriteFilter implements Filter
         String requestURI = request.getRequestURI().replace(contextRoot, "").replaceFirst("(.*)/$", "$1");
         File fileTarget = new File(request.getServletContext().getRealPath(requestURI));
         
-        System.out.println("Filter: QS=" + request.getQueryString() + " requestURI=" + request.getRequestURL() + " pathInfo=" + request.getPathInfo());
-        
         // Directory listing is only for directories that start with URI_HOME
         if (requestURI.startsWith(URI_HOME) )
         {          
@@ -41,7 +39,6 @@ public class RewriteFilter implements Filter
            else
                requestURIRewrite += "/download.do?path=" + requestURI;
            
-           System.out.println("[RewriteFilter] IsDir=" + fileTarget.isDirectory() + " URIRewrite=" + requestURIRewrite);
            request.getRequestDispatcher(requestURIRewrite).forward(request, response);
         }
         else 

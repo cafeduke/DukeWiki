@@ -176,11 +176,6 @@ pre code *::selection {
  * ---------
  */
  
-#duketxt {
-  width: 100%;
-  margin: auto;
-}
-
 #duketxt textarea{
   max-height: 85vh;
   width: 100%;

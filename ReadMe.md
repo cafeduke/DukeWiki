@@ -5,6 +5,8 @@ A Wiki for markdown and text files saved in the file system. Perform [CRUD](http
 - A [WYSIWYG](https://en.wikipedia.org/wiki/WYSIWYG) markdown editor is provided by integrating [Toast UI Editor](https://ui.toast.com/tui-editor).  
 - Markdown to HTML rendering is provided by [CommonMark-Java](https://github.com/commonmark/commonmark-java) 
 
+![](https://github.com/cafeduke/DukeWiki/blob/master/etc/doc/images/dukewiki.gif)
+
 # Getting started
 
 1. Install [Tomcat10](https://tomcat.apache.org/download-10.cgi) (or higher)
@@ -54,5 +56,4 @@ A Wiki for markdown and text files saved in the file system. Perform [CRUD](http
 | [JQuery](https://jquery.com/)                                | A fast rich JS library to ease HTML traversal and manipulation |
 | [Google Material Icons](https://fonts.google.com/icons?icon.style=Filled&icon.set=Material+Icons) | A Google library for adding material icons to web page       |
 | [Google Fonts](https://fonts.google.com/)                    | A Google library for adding fonts to web page (without requiring the font to be present on host machine) |
-
 
