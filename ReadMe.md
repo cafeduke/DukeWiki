@@ -7,6 +7,18 @@ A Wiki for markdown and text files saved in the file system. Perform [CRUD](http
 
 ![](https://github.com/cafeduke/DukeWiki/blob/master/etc/doc/images/dukewiki.gif)
 
+# Features
+- Remote CRUD operations on markdown (.md) and text (.txt) files.
+- Create, navigate filesystem and jump to given folder using breadcrumbs.
+- Rich WYSWYG editor for editing markdown files.
+- Code block syntax highlighting for markdown viewer and editor.
+- Authentication
+  - Secured access using form based authentication where user, password and roles are configured in applicaiton.properties
+- Authorization  
+  - Users with role READER shall have only read access.
+  - Users with role ADMIN shall have create, update and delete access.
+
+
 # Getting started
 
 1. Install [Tomcat10](https://tomcat.apache.org/download-10.cgi) (or higher)
