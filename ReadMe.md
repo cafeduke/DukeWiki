@@ -14,10 +14,10 @@ A Wiki for markdown and text files saved in the file system. Perform [CRUD](http
 - Code block syntax highlighting for markdown viewer and editor.
 - Authentication
   - Secured access using form based authentication where user, password and roles are configured in applicaiton.properties
+  - The password is encrypted using [BCrypt](https://www.javainuse.com/onlineBcrypt) encryption
 - Authorization  
   - Users with role READER shall have only read access.
   - Users with role ADMIN shall have create, update and delete access.
-
 
 # Getting started
 
@@ -34,7 +34,6 @@ A Wiki for markdown and text files saved in the file system. Perform [CRUD](http
 6. Login using 
    - `duke/cafebabe` (A user with `READER` and `ADMIN` roles)
    - `guest/cafebabe` (A user with only `READER` role)
-
    
 
 # Change user name, password and roles
